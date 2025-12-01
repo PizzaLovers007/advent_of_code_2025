@@ -94,14 +94,70 @@ impl Scanner {
         ScannerToken(self.buffer.pop_front().expect("No token")).into()
     }
 
+    pub fn ipar(&mut self) -> i32 {
+        self.par()
+    }
+
+    pub fn lpar(&mut self) -> i64 {
+        self.par()
+    }
+
+    pub fn upar(&mut self) -> usize {
+        self.par()
+    }
+
+    pub fn dpar(&mut self) -> f64 {
+        self.par()
+    }
+
+    pub fn spar(&mut self) -> String {
+        self.par()
+    }
+
     pub fn apar<T: From<ScannerToken>>(&mut self, n: usize) -> Vec<T> {
         self.fill_buffer();
         (0..n).map(|_| self.par()).collect()
     }
 
+    pub fn iapar(&mut self, n: usize) -> Vec<i32> {
+        self.apar(n)
+    }
+
+    pub fn lapar(&mut self, n: usize) -> Vec<i64> {
+        self.apar(n)
+    }
+
+    pub fn uapar(&mut self, n: usize) -> Vec<usize> {
+        self.apar(n)
+    }
+
+    pub fn sapar(&mut self, n: usize) -> Vec<String> {
+        self.apar(n)
+    }
+
     pub fn try_par<T: From<ScannerToken>>(&mut self) -> Option<T> {
         self.fill_buffer();
         self.buffer.pop_front().map(ScannerToken).map(|x| x.into())
+    }
+
+    pub fn try_ipar(&mut self) -> Option<i32> {
+        self.try_par()
+    }
+
+    pub fn try_lpar(&mut self) -> Option<i64> {
+        self.try_par()
+    }
+
+    pub fn try_upar(&mut self) -> Option<usize> {
+        self.try_par()
+    }
+
+    pub fn try_dpar(&mut self) -> Option<f64> {
+        self.try_par()
+    }
+
+    pub fn try_spar(&mut self) -> Option<String> {
+        self.try_par()
     }
 }
 
