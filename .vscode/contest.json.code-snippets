@@ -27,7 +27,7 @@
 			"fn main() {",
 			"    let mut scan = Scanner::new(ScannerSource::Stdin);",
 			"    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));",
-			"    // let mut scan = Scanner::new(ScannerSource::File(\"input.txt\".to_string()));",
+			"    // let mut scan = Scanner::new(ScannerSource::File(\"input.txt\"));",
 			"",
 			"    $0",
 			"}",
