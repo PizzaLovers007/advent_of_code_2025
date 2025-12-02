@@ -2,7 +2,7 @@ use advent_of_code_2025::scanner::*;
 
 fn main() {
     // let mut scan = Scanner::new(ScannerSource::Stdin);
-    let mut scan = Scanner::new(ScannerSource::File("input.txt".to_string()));
+    let mut scan = Scanner::new(ScannerSource::File("input.txt"));
     
     let mut curr = 50;
     let mut count = 0;

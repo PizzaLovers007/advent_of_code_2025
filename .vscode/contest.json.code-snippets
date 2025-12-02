@@ -21,8 +21,12 @@
 		"body": [
 			"use advent_of_code_2025::scanner::*;",
 			"",
+			"#[allow(dead_code)]",
+			"const SAMPLE: &str = \"\";",
+			"",
 			"fn main() {",
 			"    let mut scan = Scanner::new(ScannerSource::Stdin);",
+			"    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));",
 			"    // let mut scan = Scanner::new(ScannerSource::File(\"input.txt\".to_string()));",
 			"",
 			"    $0",

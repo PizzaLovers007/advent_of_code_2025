@@ -34,19 +34,20 @@ impl From<ScannerToken> for String {
     }
 }
 
-pub enum ScannerSource {
+pub enum ScannerSource<'a> {
     Stdin,
-    File(String),
+    File(&'a str),
+    Constant(&'a str),
 }
 
-pub struct Scanner {
-    source: ScannerSource,
+pub struct Scanner<'a> {
+    source: ScannerSource<'a>,
     buffer: VecDeque<String>,
     finished: bool,
 }
 
-impl Scanner {
-    pub fn new(source: ScannerSource) -> Self {
+impl<'a> Scanner<'a> {
+    pub fn new(source: ScannerSource<'a>) -> Self {
         Scanner {
             source,
             buffer: VecDeque::new(),
@@ -84,6 +85,10 @@ impl Scanner {
                     .map(char::from)
                     .collect();
                 self.buffer = contents.split_whitespace().map(|s| s.to_string()).collect();
+                self.finished = true;
+            }
+            ScannerSource::Constant(s) => {
+                self.buffer.push_back(s.to_string());
                 self.finished = true;
             }
         }
