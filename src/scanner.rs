@@ -40,9 +40,21 @@ pub enum ScannerSource<'a> {
     Constant(&'a str),
 }
 
+pub enum ScannerDelimiter {
+    Whitespace,
+    Char(char),
+}
+
+impl From<char> for ScannerDelimiter {
+    fn from(value: char) -> Self {
+        ScannerDelimiter::Char(value)
+    }
+}
+
 pub struct Scanner<'a> {
     source: ScannerSource<'a>,
     buffer: VecDeque<String>,
+    delimiter: ScannerDelimiter,
     finished: bool,
 }
 
@@ -51,6 +63,7 @@ impl<'a> Scanner<'a> {
         Scanner {
             source,
             buffer: VecDeque::new(),
+            delimiter: ScannerDelimiter::Whitespace,
             finished: false,
         }
     }
@@ -68,8 +81,8 @@ impl<'a> Scanner<'a> {
                     .map(|res_b| res_b.expect("Read error"))
                     .map(char::from);
                 let word: String = stream
-                    .skip_while(|c| c.is_whitespace())
-                    .take_while(|c| !c.is_whitespace())
+                    .skip_while(|c| self.matches_delimiter(c))
+                    .take_while(|c| !self.matches_delimiter(c))
                     .collect();
                 if word.is_empty() {
                     self.finished = true;
@@ -84,14 +97,33 @@ impl<'a> Scanner<'a> {
                     .map(|res_b| res_b.expect("Read error"))
                     .map(char::from)
                     .collect();
-                self.buffer = contents.split_whitespace().map(|s| s.to_string()).collect();
+                self.buffer = contents
+                    .trim()
+                    .split(|c| self.matches_delimiter(&c))
+                    .map(|s| s.to_string())
+                    .collect();
                 self.finished = true;
             }
             ScannerSource::Constant(s) => {
-                self.buffer.push_back(s.to_string());
+                self.buffer = s
+                    .trim()
+                    .split(|c| self.matches_delimiter(&c))
+                    .map(|s| s.to_string())
+                    .collect();
                 self.finished = true;
             }
         }
+    }
+
+    fn matches_delimiter(&self, c: &char) -> bool {
+        match &self.delimiter {
+            ScannerDelimiter::Whitespace => c.is_whitespace(),
+            ScannerDelimiter::Char(ch) => ch == c,
+        }
+    }
+
+    pub fn set_delimiter<T: Into<ScannerDelimiter>>(&mut self, delimiter: T) {
+        self.delimiter = delimiter.into();
     }
 
     pub fn par<T: From<ScannerToken>>(&mut self) -> T {

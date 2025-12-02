@@ -7,14 +7,10 @@ fn main() {
     // let mut scan = Scanner::new(ScannerSource::Stdin);
     // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
     let mut scan = Scanner::new(ScannerSource::File("input.txt"));
-
-    let line = scan.spar();
-
-    let split = line.split(',');
-    let keys: Vec<String> = split.map(|s| s.to_string()).collect();
+    scan.set_delimiter(',');
 
     let mut sum: i64 = 0;
-    for key in keys {
+    while let Some(key) = scan.try_spar() {
         let (s1, s2) = key.split_once('-').unwrap();
         let first: i64 = s1.parse().unwrap();
         let last: i64 = s2.parse().unwrap();
