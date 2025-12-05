@@ -15,14 +15,14 @@ const SAMPLE: &str = "
 ";
 
 fn main() {
-    // let mut scan = Scanner::new(ScannerSource::Stdin);
-    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
-    let mut scan = Scanner::new(ScannerSource::File("input.txt"));
+    // let scan = Scanner::new(ScannerSource::Stdin);
+    // let scan = Scanner::new(ScannerSource::Constant(SAMPLE));
+    let scan = Scanner::new(ScannerSource::File("input.txt"));
 
-    let mut mat: Vec<Vec<char>> = Vec::new();
-    while let Some(line) = scan.try_spar() {
-        mat.push(line.chars().collect());
-    }
+    let mut mat: Vec<Vec<char>> = scan
+        .into_iter()
+        .map(|t| String::from(t).chars().collect())
+        .collect();
 
     let n = mat.len();
     let m = mat[0].len();

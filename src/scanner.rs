@@ -198,6 +198,29 @@ impl<'a> Scanner<'a> {
     }
 }
 
+impl<'a> IntoIterator for Scanner<'a> {
+    type Item = ScannerToken;
+    type IntoIter = ScannerIterator<'a>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        ScannerIterator {
+            scan: self,
+        }
+    }
+}
+
+pub struct ScannerIterator<'a> {
+    scan: Scanner<'a>,
+}
+
+impl<'a> Iterator for ScannerIterator<'a> {
+    type Item = ScannerToken;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.scan.try_par()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
