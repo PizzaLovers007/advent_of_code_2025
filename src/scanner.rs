@@ -78,8 +78,7 @@ impl<'a> Scanner<'a> {
                 let stream = std::io::stdin()
                     .lock()
                     .bytes()
-                    .map(|res_b| res_b.expect("Read error"))
-                    .map(char::from);
+                    .map(|res_b| res_b.expect("Read error") as char);
                 let word: String = stream
                     .skip_while(|c| self.matches_delimiter(c))
                     .take_while(|c| !self.matches_delimiter(c))
@@ -94,8 +93,7 @@ impl<'a> Scanner<'a> {
                 let file = File::open(path).expect("Unable to open file");
                 let contents: String = file
                     .bytes()
-                    .map(|res_b| res_b.expect("Read error"))
-                    .map(char::from)
+                    .map(|res_b| res_b.expect("Read error") as char)
                     .collect();
                 self.buffer = contents
                     .trim()
