@@ -3,7 +3,8 @@ use std::{collections::HashMap, mem};
 use advent_of_code_2025::scanner::*;
 
 #[allow(dead_code)]
-const SAMPLE: &str = "162,817,812
+const SAMPLE: &str = "
+162,817,812
 57,618,57
 906,360,560
 592,479,940

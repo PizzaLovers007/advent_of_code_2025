@@ -1,7 +1,12 @@
 use advent_of_code_2025::scanner::*;
 
 #[allow(dead_code)]
-const SAMPLE: &str = "";
+const SAMPLE: &str = "
+987654321111111
+811111111111119
+234234234234278
+818181911112111
+";
 
 fn main() {
     // let mut scan = Scanner::new(ScannerSource::Stdin);

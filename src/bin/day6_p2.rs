@@ -1,28 +1,19 @@
-use std::{fs::File, io::Read};
-
 use advent_of_code_2025::scanner::*;
 
 #[allow(dead_code)]
-const SAMPLE: &str = "123 328  51 64 
+const SAMPLE: &str = "
+123 328  51 64 
  45 64  387 23 
   6 98  215 314
 *   +   *   +  
 ";
 
 fn main() {
-    // let mut scan = Scanner::new(ScannerSource::Stdin);
-    let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
-    // let mut scan = Scanner::new(ScannerSource::File("input.txt"));
+    // let scan = Scanner::new(ScannerSource::Stdin);
+    // let scan = Scanner::new(ScannerSource::Constant(SAMPLE));
+    let scan = Scanner::new(ScannerSource::File("input.txt"));
 
-    scan.set_delimiter('\n');
-
-    let file = File::open("input.txt").expect("Unable to open file");
-    let contents: String = file
-        .bytes()
-        .map(|res_b| res_b.expect("Read error") as char)
-        .collect();
-    let line_chars: Vec<Vec<char>> = contents
-        .lines()
+    let line_chars: Vec<Vec<char>> = scan.into_iter()
         .map(|line| String::from(line).chars().collect())
         .collect();
 

@@ -1,23 +1,22 @@
 use advent_of_code_2025::scanner::*;
 
 #[allow(dead_code)]
-const SAMPLE: &str = "123 328  51 64 
+const SAMPLE: &str = "
+123 328  51 64 
  45 64  387 23 
   6 98  215 314
 *   +   *   +  
 ";
 
 fn main() {
-    // let mut scan = Scanner::new(ScannerSource::Stdin);
-    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
-    let mut scan = Scanner::new(ScannerSource::File("input.txt"));
-
-    scan.set_delimiter('\n');
+    // let scan = Scanner::new(ScannerSource::Stdin);
+    // let scan = Scanner::new(ScannerSource::Constant(SAMPLE));
+    let scan = Scanner::new(ScannerSource::File("input.txt"));
 
     let mut nums: Vec<Vec<_>> = Vec::new();
     let mut ops: Vec<_> = Vec::new();
-    while let Some(line) = scan.try_spar() {
-        let tokens: Vec<_> = line.split_whitespace().map(|t| t.to_string()).collect();
+    for line in scan.into_iter() {
+        let tokens: Vec<_> = String::from(line).split_whitespace().map(|t| t.to_string()).collect();
         if tokens[0].chars().next().unwrap().is_digit(10) {
             nums.push(tokens.iter().map(|t| t.parse::<i64>().unwrap()).collect());
         } else {

@@ -1,7 +1,22 @@
 use advent_of_code_2025::scanner::*;
 
+#[allow(dead_code)]
+const SAMPLE: &str = "
+L68
+L30
+R48
+L5
+R60
+L55
+L1
+L99
+R14
+L82
+";
+
 fn main() {
     // let mut scan = Scanner::new(ScannerSource::Stdin);
+    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
     let mut scan = Scanner::new(ScannerSource::File("input.txt"));
     
     let mut curr = 50;

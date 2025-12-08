@@ -1,6 +1,6 @@
 use std::collections::VecDeque;
 use std::fs::File;
-use std::io::Read;
+use std::io::{BufRead, Read};
 
 pub struct ScannerToken(String);
 
@@ -40,54 +40,26 @@ pub enum ScannerSource<'a> {
     Constant(&'a str),
 }
 
-pub enum ScannerDelimiter {
-    Whitespace,
-    Char(char),
-}
-
-impl From<char> for ScannerDelimiter {
-    fn from(value: char) -> Self {
-        ScannerDelimiter::Char(value)
-    }
-}
-
 pub struct Scanner<'a> {
     source: ScannerSource<'a>,
     buffer: VecDeque<String>,
-    delimiter: ScannerDelimiter,
-    finished: bool,
 }
 
 impl<'a> Scanner<'a> {
     pub fn new(source: ScannerSource<'a>) -> Self {
-        Scanner {
+        let mut scan = Scanner {
             source,
             buffer: VecDeque::new(),
-            delimiter: ScannerDelimiter::Whitespace,
-            finished: false,
-        }
-    }
+        };
 
-    fn fill_buffer(&mut self) {
-        if self.finished {
-            return;
-        }
-
-        match &self.source {
+        match &scan.source {
             ScannerSource::Stdin => {
-                let stream = std::io::stdin()
+                scan.buffer = std::io::stdin()
                     .lock()
-                    .bytes()
-                    .map(|res_b| res_b.expect("Read error") as char);
-                let word: String = stream
-                    .skip_while(|c| self.matches_delimiter(c))
-                    .take_while(|c| !self.matches_delimiter(c))
+                    .lines()
+                    .map(|s| s.unwrap())
+                    .skip_while(|line| line.is_empty())
                     .collect();
-                if word.is_empty() {
-                    self.finished = true;
-                } else {
-                    self.buffer.push_back(word);
-                }
             }
             ScannerSource::File(path) => {
                 let file = File::open(path).expect("Unable to open file");
@@ -95,37 +67,25 @@ impl<'a> Scanner<'a> {
                     .bytes()
                     .map(|res_b| res_b.expect("Read error") as char)
                     .collect();
-                self.buffer = contents
-                    .trim()
-                    .split(|c| self.matches_delimiter(&c))
+                scan.buffer = contents
+                    .lines()
+                    .skip_while(|&line| line.is_empty())
                     .map(|s| s.to_string())
                     .collect();
-                self.finished = true;
             }
             ScannerSource::Constant(s) => {
-                self.buffer = s
-                    .trim()
-                    .split(|c| self.matches_delimiter(&c))
+                scan.buffer = s
+                    .lines()
+                    .skip_while(|&line| line.is_empty())
                     .map(|s| s.to_string())
                     .collect();
-                self.finished = true;
             }
         }
-    }
 
-    fn matches_delimiter(&self, c: &char) -> bool {
-        match &self.delimiter {
-            ScannerDelimiter::Whitespace => c.is_whitespace(),
-            ScannerDelimiter::Char(ch) => ch == c,
-        }
-    }
-
-    pub fn set_delimiter<T: Into<ScannerDelimiter>>(&mut self, delimiter: T) {
-        self.delimiter = delimiter.into();
+        scan
     }
 
     pub fn par<T: From<ScannerToken>>(&mut self) -> T {
-        self.fill_buffer();
         ScannerToken(self.buffer.pop_front().expect("No token")).into()
     }
 
@@ -150,7 +110,6 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn apar<T: From<ScannerToken>>(&mut self, n: usize) -> Vec<T> {
-        self.fill_buffer();
         (0..n).map(|_| self.par()).collect()
     }
 
@@ -171,7 +130,6 @@ impl<'a> Scanner<'a> {
     }
 
     pub fn try_par<T: From<ScannerToken>>(&mut self) -> Option<T> {
-        self.fill_buffer();
         self.buffer.pop_front().map(ScannerToken).map(|x| x.into())
     }
 
@@ -201,9 +159,7 @@ impl<'a> IntoIterator for Scanner<'a> {
     type IntoIter = ScannerIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
-        ScannerIterator {
-            scan: self,
-        }
+        ScannerIterator { scan: self }
     }
 }
 

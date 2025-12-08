@@ -1,7 +1,8 @@
 use advent_of_code_2025::scanner::*;
 
 #[allow(dead_code)]
-const SAMPLE: &str = "3-5
+const SAMPLE: &str = "
+3-5
 10-14
 16-20
 12-18
@@ -15,11 +16,9 @@ const SAMPLE: &str = "3-5
 ";
 
 fn main() {
-    // let mut scan = Scanner::new(ScannerSource::Stdin);
-    // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
-    let mut scan = Scanner::new(ScannerSource::File("input.txt"));
-
-    scan.set_delimiter('\n');
+    // let scan = Scanner::new(ScannerSource::Stdin);
+    // let scan = Scanner::new(ScannerSource::Constant(SAMPLE));
+    let scan = Scanner::new(ScannerSource::File("input.txt"));
 
     let mut ranges: Vec<_> = Vec::new();
     let mut state = 0;

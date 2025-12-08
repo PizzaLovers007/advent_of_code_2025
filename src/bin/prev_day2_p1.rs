@@ -7,7 +7,6 @@ fn main() {
     // let mut scan = Scanner::new(ScannerSource::Stdin);
     // let mut scan = Scanner::new(ScannerSource::Constant(SAMPLE));
     let mut scan = Scanner::new(ScannerSource::File("input.txt"));
-    scan.set_delimiter('\n');
 
     let mut count = 0;
     while let Some(line) = scan.try_spar() {
