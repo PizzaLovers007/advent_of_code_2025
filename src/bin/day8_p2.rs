@@ -89,7 +89,7 @@ fn main() {
 
     let points: Vec<Point> = scan
         .into_iter()
-        .map(|t| String::from(t).split(',').map(|s| s.to_string()).collect())
+        .map(|line| line.split(',').map(|s| s.to_string()).collect())
         .collect();
 
     let n = points.len();

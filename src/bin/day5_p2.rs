@@ -22,8 +22,7 @@ fn main() {
 
     let mut lefts: Vec<_> = Vec::new();
     let mut rights: Vec<_> = Vec::new();
-    for line in scan.into_iter() {
-        let s = String::from(line);
+    for s in scan.into_iter() {
         if s.is_empty() {
             break;
         }

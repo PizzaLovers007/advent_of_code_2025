@@ -155,7 +155,7 @@ impl<'a> Scanner<'a> {
 }
 
 impl<'a> IntoIterator for Scanner<'a> {
-    type Item = ScannerToken;
+    type Item = String;
     type IntoIter = ScannerIterator<'a>;
 
     fn into_iter(self) -> Self::IntoIter {
@@ -168,7 +168,7 @@ pub struct ScannerIterator<'a> {
 }
 
 impl<'a> Iterator for ScannerIterator<'a> {
-    type Item = ScannerToken;
+    type Item = String;
 
     fn next(&mut self) -> Option<Self::Item> {
         self.scan.try_par()

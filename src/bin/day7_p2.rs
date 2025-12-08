@@ -27,7 +27,7 @@ fn main() {
 
     let mat: Vec<Vec<char>> = scan
         .into_iter()
-        .map(|line| String::from(line).chars().collect())
+        .map(|line| line.chars().collect())
         .collect();
 
     let n = mat.len();

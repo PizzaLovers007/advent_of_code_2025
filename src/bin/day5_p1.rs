@@ -23,8 +23,7 @@ fn main() {
     let mut ranges: Vec<_> = Vec::new();
     let mut state = 0;
     let mut ans = 0;
-    for line in scan.into_iter() {
-        let s = String::from(line);
+    for s in scan.into_iter() {
         if s.is_empty() {
             state = 1;
             println!("{ranges:?}");

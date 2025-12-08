@@ -16,7 +16,7 @@ fn main() {
     let mut nums: Vec<Vec<_>> = Vec::new();
     let mut ops: Vec<_> = Vec::new();
     for line in scan.into_iter() {
-        let tokens: Vec<_> = String::from(line).split_whitespace().map(|t| t.to_string()).collect();
+        let tokens: Vec<_> = line.split_whitespace().map(|t| t.to_string()).collect();
         if tokens[0].chars().next().unwrap().is_digit(10) {
             nums.push(tokens.iter().map(|t| t.parse::<i64>().unwrap()).collect());
         } else {
